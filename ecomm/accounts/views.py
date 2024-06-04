@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.contrib.messages import messages
+from django.contrib import messages
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -27,7 +27,7 @@ def register_page(request):
         user_obj.set_password(password)
         user_obj.save()
 
-        messages.warning(re)
-
+        messages.warning(request,'An email has been sent on your mail.')
+        return HttpResponseRedirect(request.path_info)
 
     return render(request,'accounts/register.html')
