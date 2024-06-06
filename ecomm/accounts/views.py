@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login , logout
+from .models import Profile
 
 # Create your views here.
 
@@ -45,9 +46,9 @@ def register_page(request):
 
         user_obj = User.objects.filter(username = email)
 
-        # if user_obj.exists():
-        #     messages.warning(request,'Email is already is taken')
-        #     return HttpResponseRedirect(request.path_info)
+        if user_obj.exists():
+            messages.warning(request,'Email is already is taken')
+            return HttpResponseRedirect(request.path_info)
         
         user_obj = User.objects.create(first_name = first_name , last_name = last_name , 
                                        email = email , username = email )
@@ -58,3 +59,13 @@ def register_page(request):
         return HttpResponseRedirect(request.path_info)
 
     return render(request,'accounts/register.html')
+
+def activate_email(request,email_token):
+    try:
+        user = Profile.objects.get(email_token = email_token)
+        user.is_email_verified = True
+        user.save()
+        return HttpResponseRedirect('/')
+    
+    except Exception as e:
+        return HttpResponseRedirect('invalid email token')
