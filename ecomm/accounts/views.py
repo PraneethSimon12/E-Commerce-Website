@@ -45,9 +45,9 @@ def register_page(request):
 
         user_obj = User.objects.filter(username = email)
 
-        if user_obj.exists():
-            messages.warning(request,'Email is already is taken')
-            return HttpResponseRedirect(request.path_info)
+        # if user_obj.exists():
+        #     messages.warning(request,'Email is already is taken')
+        #     return HttpResponseRedirect(request.path_info)
         
         user_obj = User.objects.create(first_name = first_name , last_name = last_name , 
                                        email = email , username = email )
