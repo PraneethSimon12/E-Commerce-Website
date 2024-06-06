@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.models import authenticate , login , logout
+from django.contrib.auth import authenticate, login , logout
 
 # Create your views here.
 
@@ -19,6 +19,10 @@ def login_page(request):
 
         if not user_obj.exists():
             messages.warning(request,'Account not found')
+            return HttpResponseRedirect(request.path_info)
+        
+        if user_obj[0].profile.is_email_verified:
+            messages.warning(request,'your account is not verified')
             return HttpResponseRedirect(request.path_info)
         
         user_obj = authenticate(username = email , password = password)
