@@ -8,5 +8,9 @@ def get_product(request,slug):
         product = Product.objects.get(slug=slug)
         return render(request,'product/product.html',context={'product' : product})
 
+        if request.GET.get('size'):
+            size = request.GET.get('size')
+            
+
     except Exception as e:
         print(e)
