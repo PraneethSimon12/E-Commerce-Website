@@ -84,7 +84,7 @@
                       {% for size in product.size_variant.all %}
                       
                         <label class="custom-control custom-radio custom-control-inline">
-                          <input type="radio" name="select_size" checked="" class="custom-control-input">
+                          <input type="radio" onchange = "get_correct_price('{{size.size_name}}')" name="select_size" {% if select_size=size.size_name %} checked {% endif %} class="custom-control-input">
                           <div class="custom-control-label">{{size.size_name}}</div>
                         </label>
     
@@ -97,7 +97,7 @@
         </div> <!-- row.// -->
     
         <a href="#" class="btn  btn-primary"> Buy now </a>
-        <a href="#" class="btn  btn-outline-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+        <a href="{% url "add_to_cart" product.uid %}?variant={{select_size}}" class="btn  btn-outline-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
     </article> <!-- product-info-aside .// -->
             </main> <!-- col.// -->
         </div> <!-- row.// -->

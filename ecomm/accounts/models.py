@@ -5,7 +5,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import uuid
 from base.emails import send_account_activation_email
-from products.models import Product
+from products.models import Product, ColorVariant , SizeVariant
+import uuid
 # Create your models here.
 
 
@@ -21,7 +22,11 @@ class Cart(BaseModel):
 
 class CartItems(BaseModel):
     cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cart_items')
-    products = models.ForeignKey()
+    products = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
+    color_variant = models.ForeignKey(ColorVariant, on_delete=models.SET_NULL, null=True, blank=True)
+    size_variant = models.ForeignKey(SizeVariant , on_delete=models.SET_NULL , blank=True, null=True)
+    
+
 
 
 
