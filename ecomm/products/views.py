@@ -17,7 +17,7 @@ def get_product(request,slug):
             context['updated_price'] = price
             print(price)
 
-        return render(request,'product/product.html',context=context)    
+        return render(request,'product/product.html', context={'product' : product})    
 
     except Exception as e:
         print(e)
