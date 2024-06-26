@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate , login , logout
 from django.http import HttpResponseRedirect,HttpResponse
 from .models import Profile
+from products.models import *
+
 
 # Create your views here.
 
@@ -60,6 +62,24 @@ def register_page(request):
 
     return render(request,'accounts/register.html')
 
+def add_to_cart(request,uid):
+    variant = request.GET.get('variant')
+
+
+    product = Product.objects.get(uid = uid)
+    user = request.user
+    cart , _ = Cart.objects.get_or_create(user = user , is_paid = False)
+
+    cart_item = CartItems.objects.create(cart = cart , product = product)
+
+    if variant:
+        variant = request.GET.get('variant')
+        size_variant = SizeVariant.objects.get(size_name = variant)
+        cart_item.size_variant = size_variant
+        cart_item.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 def activate_email(request,email_token):
     try:
         user = Profile.objects.get(email_token = email_token)
@@ -69,3 +89,6 @@ def activate_email(request,email_token):
     
     except Exception as e:
         return HttpResponseRedirect('invalid email token')
+    
+def cart(request):
+    return render(request,'accounts/cart.html')

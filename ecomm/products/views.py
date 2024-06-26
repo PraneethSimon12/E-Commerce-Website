@@ -27,7 +27,7 @@ def add_to_cart(request,uid):
     variant = request.GET.get('variant')
 
 
-    product = Product.objects.get(uid = 'uid')
+    product = Product.objects.get(uid = uid)
     user = request.user
     cart , _ = Cart.objects.get_or_create(user = user , is_paid = False)
 
@@ -39,4 +39,4 @@ def add_to_cart(request,uid):
         cart_item.size_variant = size_variant
         cart_item.save()
 
-    return HttpResponseRedirect(request.path_info)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
